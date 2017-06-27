@@ -1,0 +1,6 @@
+{
+    "require": {
+        "katzgrau/klogger": "^1.2",
+        "twilio/sdk": "^5.11"
+    }
+}
