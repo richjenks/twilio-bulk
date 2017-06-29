@@ -1,5 +1,9 @@
 <?php
 
+// Could take a while...
+set_time_limit(0);
+
+// Composer
 require 'vendor/autoload.php';
 
 // Dependencies
