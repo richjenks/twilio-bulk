@@ -11,9 +11,18 @@ $config = require('config.php');
 $logger = new Katzgrau\KLogger\Logger(__DIR__.'/log');
 $client = new Twilio\Rest\Client($config['account_id'], $config['auth_token']);
 
-// Use `fwrite` so output is immediate
+// Are you sure?
 $c = count($config['to']);
+$m = $config['message'];
+fwrite(STDOUT, "TWILIO BILK SMS\n");
 fwrite(STDOUT, "Attempting to send to $c recipient(s)\n");
+fwrite(STDOUT, "Message: $m\n");
+fwrite(STDOUT, "Type 'Twilio' to continue: ");
+$input = trim(fgets(STDIN));
+if ($input !== 'Twilio') {
+	fwrite(STDOUT, "Aborting");
+	die;
+}
 
 // Iterate through each recipient
 for ($i = 0; $i < $c; $i++) {
