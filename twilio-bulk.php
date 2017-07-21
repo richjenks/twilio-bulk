@@ -6,17 +6,22 @@ set_time_limit(0);
 // Composer
 require 'vendor/autoload.php';
 
+// Config
+$recipients = explode("\n", str_replace("\r", '', file_get_contents(__DIR__ . '/config/recipients.txt')));
+$message    = file_get_contents(__DIR__ . '/config/message.txt');
+$auth       = parse_ini_file(__DIR__ . '/config/auth.txt');
+
 // Dependencies
-$config = require('config.php');
 $logger = new Katzgrau\KLogger\Logger(__DIR__.'/log');
-$client = new Twilio\Rest\Client($config['account_id'], $config['auth_token']);
+$client = new Twilio\Rest\Client($auth['account_id'], $auth['auth_token']);
+
+// Welcome!
+$count = count($recipients);
+fwrite(STDOUT, "TWILIO BILK SMS\n");
+fwrite(STDOUT, "Attempting to send to $count recipient(s)\n");
+fwrite(STDOUT, "Message: $message\n");
 
 // Are you sure?
-$c = count($config['to']);
-$m = $config['message'];
-fwrite(STDOUT, "TWILIO BILK SMS\n");
-fwrite(STDOUT, "Attempting to send to $c recipient(s)\n");
-fwrite(STDOUT, "Message: $m\n");
 fwrite(STDOUT, "Type 'Twilio' to continue: ");
 $input = trim(fgets(STDIN));
 if ($input !== 'Twilio') {
@@ -25,10 +30,10 @@ if ($input !== 'Twilio') {
 }
 
 // Iterate through each recipient
-for ($i = 0; $i < $c; $i++) {
+for ($i = 0; $i < $count; $i++) {
 
 	// Current recipient
-	$to = $config['to'][$i];
+	$recipient = $recipients[$i];
 
 	// Recipient number for output
 	$n = $i + 1;
@@ -37,19 +42,19 @@ for ($i = 0; $i < $c; $i++) {
 	try {
 
 		$client->messages->create(
-			$config['to'][$i],
+			$recipients[$i],
 			[
-				'from' => $config['from'],
-				'body' => $config['message'],
+				'from' => $auth['sent_from'],
+				'body' => $message,
 			]
 		);
 
-		$logger->info('Sent message to ' . $to);
-		fwrite(STDOUT, "($n/$c) $to SEND SUCCESS\n");
+		$logger->info('Sent message to ' . $recipient);
+		fwrite(STDOUT, "($n/$count) $recipient SEND SUCCESS\n");
 
 	} catch (Exception $e) {
 		$logger->error($e);
-		fwrite(STDOUT, "($n/$c) $to ERROR: PLEASE CHECK LOG FILE\n");
+		fwrite(STDOUT, "($n/$count) $recipient ERROR: PLEASE CHECK LOG FILE\n");
 	}
 
 }
