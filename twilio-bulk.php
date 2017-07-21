@@ -15,11 +15,18 @@ $auth       = parse_ini_file(__DIR__ . '/config/auth.txt');
 $logger = new Katzgrau\KLogger\Logger(__DIR__.'/log');
 $client = new Twilio\Rest\Client($auth['account_id'], $auth['auth_token']);
 
-// Welcome!
+// Intro data
 $count = count($recipients);
-fwrite(STDOUT, "TWILIO BULK SMS\n");
-fwrite(STDOUT, "Attempting to send to $count recipient(s)\n");
-fwrite(STDOUT, "Message: $message\n");
+$messages = 1;
+$length = strlen($message);
+if ($length > 160) $messages = ceil($length / 153);
+$messages = $messages * $count;
+
+// Welcome!
+fwrite(STDOUT, "\033[1;37m\033[44m");
+fwrite(STDOUT, "$message\n");
+fwrite(STDOUT, "\033[0m");
+fwrite(STDOUT, "$length character(s) | $count recipient(s) | $messages message(s)\n");
 
 // Are you sure?
 fwrite(STDOUT, "Type 'Twilio' to continue: ");
