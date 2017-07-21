@@ -17,7 +17,7 @@ $client = new Twilio\Rest\Client($auth['account_id'], $auth['auth_token']);
 
 // Welcome!
 $count = count($recipients);
-fwrite(STDOUT, "TWILIO BILK SMS\n");
+fwrite(STDOUT, "TWILIO BULK SMS\n");
 fwrite(STDOUT, "Attempting to send to $count recipient(s)\n");
 fwrite(STDOUT, "Message: $message\n");
 
