@@ -36,6 +36,9 @@ if ($input !== 'Twilio') {
 	die;
 }
 
+// Errors?
+$errors = false;
+
 // Iterate through each recipient
 for ($i = 0; $i < $count; $i++) {
 
@@ -60,8 +63,12 @@ for ($i = 0; $i < $count; $i++) {
 		fwrite(STDOUT, "($n/$count) $recipient SEND SUCCESS\n");
 
 	} catch (Exception $e) {
+		$errors = true;
 		$logger->error($e);
-		fwrite(STDOUT, "($n/$count) $recipient ERROR: PLEASE CHECK LOG FILE\n");
+		fwrite(STDOUT, "($n/$count) $recipient ERROR: PLEASE CHECK LOGS\n");
 	}
 
 }
+
+// Errors?
+if ($errors) fwrite(STDOUT, "There were errors, please check logs\n");
