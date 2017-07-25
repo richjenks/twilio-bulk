@@ -1,0 +1,16 @@
+; See https://www.twilio.com/sms/pricing
+
+; United States
+cost   = 0.0075
+symbol = $
+rate   = 1
+
+; United Kingdom
+; cost   = 0.04
+; symbol = £
+; rate   = 0.77
+
+; Australia
+; cost   = 0.057
+; symbol = $
+; rate   = 1.26
