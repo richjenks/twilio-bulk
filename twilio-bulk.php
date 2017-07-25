@@ -57,19 +57,6 @@ fwrite(STDOUT, "Recipients(s):\t$count\n");
 fwrite(STDOUT, "Messages:\t$messages\n");
 fwrite(STDOUT, "Requests:\t$requests\n");
 
-// Intro data
-// $count = count($recipients);
-// $messages = 1;
-// $length = strlen($message);
-// if ($length > 160) $messages = ceil($length / 153);
-// $messages = $messages * $count;
-
-// Welcome!
-// fwrite(STDOUT, "\033[1;37m\033[44m");
-// fwrite(STDOUT, "$message\n");
-// fwrite(STDOUT, "\033[0m");
-// fwrite(STDOUT, "$length character(s) | $count recipient(s) | $messages message(s)\n");
-
 // Are you sure?
 fwrite(STDOUT, "Type 'Twilio' to continue: ");
 $input = trim(fgets(STDIN));
