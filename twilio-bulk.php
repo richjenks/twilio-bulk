@@ -15,8 +15,7 @@ $cost       = parse_ini_file(__DIR__ . '/config/cost.txt');
 // Handle multi-line recipients file
 $recipients = explode("\n", str_replace("\r", '', $recipients));
 
-// Dependencies
-$logger = new Katzgrau\KLogger\Logger(__DIR__.'/log');
+// Twilio REST Client
 $client = new Twilio\Rest\Client($auth['account_id'], $auth['auth_token']);
 
 // Message length limits
@@ -33,6 +32,7 @@ $gsm7 = preg_split('//u', $gsm7, -1, PREG_SPLIT_NO_EMPTY);
 // Analyse chars
 $ucs2 = false;
 $chars = preg_split('//u', $message, -1, PREG_SPLIT_NO_EMPTY);
+fwrite(STDOUT, "\e[36m"); // Blue text
 foreach ($chars as $char) {
 	$valid = (in_array($char, $gsm7));
 	if (!$valid) {
@@ -40,9 +40,11 @@ foreach ($chars as $char) {
 		fwrite(STDOUT, "\e[97m"); // White text
 	}
 	fwrite(STDOUT, $char);
-	if (!$valid) fwrite(STDOUT, "\e[0m"); // Blue background
+	fwrite(STDOUT, "\e[36m"); // Blue text
+	fwrite(STDOUT, "\e[49m"); // Default background
 	if (!$valid) $ucs2 = true;
 }
+fwrite(STDOUT, "\e[0m"); // Default text
 fwrite(STDOUT, "\n");
 
 // Analyse message
@@ -65,7 +67,6 @@ fwrite(STDOUT, "Messages:\t$messages\n");
 fwrite(STDOUT, "Requests:\t$requests\n");
 
 // Cost report
-// list($cost, $symbol, $rate) = $cost;
 extract($cost);
 $cost = round($cost * $messages * $rate, 2);
 fwrite(STDOUT, "Recipient Cost:\t$symbol$cost\n");
@@ -80,6 +81,9 @@ if ($input !== 'Twilio') {
 	fwrite(STDOUT, "Aborting");
 	die;
 }
+
+// KLogger
+$logger = new Katzgrau\KLogger\Logger(__DIR__.'/log');
 
 // Errors?
 $errors = false;
