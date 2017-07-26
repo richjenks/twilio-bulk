@@ -1,5 +1,3 @@
-; See https://www.twilio.com/sms/pricing
-
 ; United States
 cost   = 0.0075
 symbol = $
