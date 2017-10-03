@@ -73,6 +73,10 @@ fwrite(STDOUT, "Recipient Cost:\t$symbol$cost\n");
 $cost = round($cost * $count, 2);
 fwrite(STDOUT, "Total Cost:\t$symbol$cost\n");
 
+// Time report
+$minutes = round($requests * 1.2 / 60);
+fwrite(STDOUT, "Task Duration:\t$minutes minutes\n");
+
 // Are you sure?
 fwrite(STDOUT, "--------------------------------------------------------------------------------\n");
 fwrite(STDOUT, "Type 'Twilio' to continue: ");
