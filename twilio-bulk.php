@@ -78,7 +78,9 @@ fwrite(STDOUT, "----------------------------------------------------------------
 fwrite(STDOUT, "Type 'Twilio' to continue: ");
 $input = trim(fgets(STDIN));
 if ($input !== 'Twilio') {
-	fwrite(STDOUT, "Aborting");
+	fwrite(STDOUT, "\e[31m"); // Red text
+	fwrite(STDOUT, "Aborting\n");
+	fwrite(STDOUT, "\e[0m"); // Default text
 	die;
 }
 
